@@ -131,7 +131,7 @@ Color3f PhotonMapper::Li(const Ray &ray, const Scene &scene, std::shared_ptr<Sam
         else
         {
             isect.ProduceBSDF();
-            float rangeArea = Pi * searchR * searchR;
+            float rangeArea = (1.f / 3.f) * Pi * searchR * searchR;
             std::vector<const Photon*> rangePhotons = kdtree->particlesInSphere(isect.point, searchR);
             Color3f photonResult(0.f);
             int countedPhoton = 0;
@@ -150,8 +150,8 @@ Color3f PhotonMapper::Li(const Ray &ray, const Scene &scene, std::shared_ptr<Sam
                     {
                         continue;
                     }
-                    // float disWeight = 1 - (glm::length(p->pos - isect.point) / searchR);
-                    float disWeight = 1.f;
+                    float disWeight = 1 - (glm::length(p->pos - isect.point) / searchR);
+                    // float disWeight = 1.f;
                     Color3f thisPhoton = (pf * p->color * disWeight) * AbsDot(isect.normalGeometric, p->wi) / pdf;
                     photonResult += thisPhoton;
                     if(MaxComponent(thisPhoton) > 1.f)
@@ -162,9 +162,9 @@ Color3f PhotonMapper::Li(const Ray &ray, const Scene &scene, std::shared_ptr<Sam
             }
             if(countedPhoton != 0)
             {
-                photonResult = photonResult / (float)countedPhoton;
+                // photonResult = photonResult / (float)countedPhoton;
                 // photonResult = photonResult;
-                // photonResult /= rangeArea;
+                photonResult /= rangeArea;
                 result = photonResult;
                 // result += (photonResult / rangeArea);
             }

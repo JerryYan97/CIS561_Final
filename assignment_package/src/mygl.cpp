@@ -28,7 +28,7 @@ MyGL::MyGL(QWidget *parent)
       sampler(new Sampler(100, 0)),
       integratorType(NAIVE_LIGHTING),
       recursionLimit(5),
-      numPhotons(100000), photonSearchRadius(0.5f),
+      numPhotons(500000), photonSearchRadius(0.5f),
       completeSFX(":/include/complete.wav")
 {
     setFocusPolicy(Qt::ClickFocus);

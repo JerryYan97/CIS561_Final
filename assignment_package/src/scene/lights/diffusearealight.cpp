@@ -55,7 +55,7 @@ Photon DiffuseAreaLight::Sample_Photon(std::shared_ptr<Sampler> sampler, int num
 
     // set power of photons
     // thisPhoton.color = emittedLight * area / (numPhotons * pdfDir);
-    thisPhoton.color = 300.f * emittedLight * area / (float)numPhotons;
+    thisPhoton.color = 0.5f * emittedLight * area / (float)numPhotons;
     // thisPhoton.color = emittedLight;
     // thisPhoton.color = emittedLight / pdfDir;
     return thisPhoton;

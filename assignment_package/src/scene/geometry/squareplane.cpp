@@ -61,7 +61,8 @@ void SquarePlane::Sample_Photon(Photon &inPhoton, std::shared_ptr<Sampler> sampl
     Point2f xi = sampler->Get2D();
     Point2f xd = sampler->Get2D();
     // Vector3f wi = WarpFunctions::squareToHemisphereCosine(xd);
-    Vector3f wi = WarpFunctions::squareToHemisphereUniform(xd);
+    // Vector3f wi = WarpFunctions::squareToHemisphereUniform(xd);
+    Vector3f wi = WarpFunctions::squareToSphereCapUniform(xd, 145.f);
     // WarpFunctions::square
 
     pdf = WarpFunctions::squareToHemisphereCosinePDF(wi);
