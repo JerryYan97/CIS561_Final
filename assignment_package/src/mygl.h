@@ -55,6 +55,7 @@ private:
     float photonSearchRadius;
 
     KDTree kdTree;
+    KDTree causticKDTree;
 
     QString output_filepath;
 

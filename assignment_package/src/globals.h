@@ -17,6 +17,7 @@
 // Global constants. You may not end up using all of these.
 static const float ShadowEpsilon = 0.0001f;
 static const float RayEpsilon = 0.000005f;
+// static const float RayEpsilon = 0.05f;
 static const float Pi = 3.14159265358979323846;
 static const float TwoPi = 6.28318530717958647692;
 static const float InvPi = 0.31830988618379067154;
@@ -260,6 +261,11 @@ inline Bounds3f Union(const Bounds3f &b1, const Bounds3f &b2)
 inline float MaxComponent(const Vector3f& v)
 {
     return std::max(v.x, std::max(v.y, v.z));
+}
+
+inline float MinComponent(const Vector3f& v)
+{
+    return std::min(v.x, std::min(v.y, v.z));
 }
 
 inline Vector3f UniformSampleSphere(const Point2f &u)

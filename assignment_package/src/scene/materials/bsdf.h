@@ -40,7 +40,7 @@ public:
     // Refer to the .cpp file for a more detailed function description.
     Color3f Sample_f(const Vector3f &woW, Vector3f *wiW, const Point2f &xi,
                      float *pdf, BxDFType type = BSDF_ALL,
-                     BxDFType *sampledType = nullptr) const;
+                     BxDFType *sampledType = nullptr);
 
     // Computes the average PDF of all BxDFs that match the given BxDFType
     // i.e. sum each BxDF's Pdf() result and divide by the number of BxDFs
@@ -48,10 +48,10 @@ public:
     // Note that _woW_ and _wiW_ are given in world space, and must
     // be converted to tangent space before being passed to BxDF::Pdf
     float Pdf(const Vector3f &woW, const Vector3f &wiW,
-              BxDFType flags = BSDF_ALL) const;
+              BxDFType flags = BSDF_ALL);
 
     // Compute the number of BxDFs that match the input flags.
-    int BxDFsMatchingFlags(BxDFType flags) const;
+    int BxDFsMatchingFlags(BxDFType flags);
 
     void UpdateTangentSpaceMatrices(const Normal3f& n, const Vector3f& t, const Vector3f b);
 
@@ -67,9 +67,9 @@ public:
 
 
     int numBxDFs; // How many BxDFs this BSDF currently contains (init. 0)
- private:
     const static int MaxBxDFs = 8; // How many BxDFs a single BSDF can contain
     BxDF* bxdfs[MaxBxDFs]; // The collection of BxDFs contained in this BSDF
+ private:
 };
 
 class BxDF
@@ -97,10 +97,3 @@ public:
     const BxDFType type;
 };
 
-inline int BSDF::BxDFsMatchingFlags(BxDFType flags) const
-{
-    int num = 0;
-    for (int i = 0; i < numBxDFs; ++i)
-        if (bxdfs[i]->MatchesFlags(flags)) ++num;
-    return num;
-}

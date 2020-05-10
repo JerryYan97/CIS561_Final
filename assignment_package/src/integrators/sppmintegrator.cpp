@@ -3,6 +3,7 @@
 #include <scene/lights/pointlight.h>
 #include <iostream>
 
+
 struct SPPMPixel{
 
     float radius = 0;
@@ -104,7 +105,7 @@ void SPPMIntegrator::Render()
                     break;
                 }
                 isect.ProduceBSDF();
-                const BSDF &bsdf = *isect.bsdf;
+                BSDF &bsdf = *isect.bsdf;
 
                 // Possibly create visible point and end camera path:
                 // ? This is not feasible for this project.
@@ -301,7 +302,7 @@ void SPPMIntegrator::Render()
                     photonRay = isect.SpawnRay(photonRay.direction);
                     continue;
                 }
-                const BSDF &photonBSDF = *isect.bsdf;
+                BSDF &photonBSDF = *isect.bsdf;
 
                 // Sample BSDF fr and direction wi for reflected photon:
                 Vector3f wi, wo = -photonRay.direction;

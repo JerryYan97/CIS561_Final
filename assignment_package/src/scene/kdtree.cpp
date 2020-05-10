@@ -532,7 +532,10 @@ std::vector<const Photon*> KDTree::particlesInSphere(const glm::vec3& c, const f
 {
     //TODO
     std::vector<const Photon*> reportedPoints;
-    searchKdTree(this->root, reportedPoints, c, r);
+    if(this->root)
+    {
+        searchKdTree(this->root, reportedPoints, c, r);
+    }
     // std::cout << "reportedpoints num: " << reportedPoints.size() << std::endl;
     return reportedPoints;
 }

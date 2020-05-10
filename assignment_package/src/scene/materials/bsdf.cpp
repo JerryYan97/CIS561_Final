@@ -1,5 +1,6 @@
 #include "bsdf.h"
 #include <warpfunctions.h>
+#include <QMutex>
 
 BSDF::BSDF(const Intersection& isect, float eta /*= 1*/)
 //TODO: Properly set worldToTangent and tangentToWorld
@@ -71,11 +72,13 @@ This is just a function that is responsible for these staffs:
 3. Get pdf;
 */
 Color3f BSDF::Sample_f(const Vector3f &woW, Vector3f *wiW, const Point2f &xi,
-                       float *pdf, BxDFType type, BxDFType *sampledType) const
+                       float *pdf, BxDFType type, BxDFType *sampledType)
 {
     //TODO
     // Choose which BxDF to sample:
+    // mutex.lock();
     int matchingComps = this->BxDFsMatchingFlags(type);
+    // mutex.unlock();
     if(matchingComps == 0)
     {
         *pdf = 0;
@@ -146,7 +149,7 @@ Color3f BSDF::Sample_f(const Vector3f &woW, Vector3f *wiW, const Point2f &xi,
 }
 
 
-float BSDF::Pdf(const Vector3f &woW, const Vector3f &wiW, BxDFType flags) const
+float BSDF::Pdf(const Vector3f &woW, const Vector3f &wiW, BxDFType flags)
 {
     //TODO
     int matchingComps = this->BxDFsMatchingFlags(flags);
@@ -198,3 +201,30 @@ BSDF::~BSDF()
         delete bxdfs[i];
     }
 }
+
+QMutex mutex;
+// inline int BSDF::BxDFsMatchingFlags(BxDFType flags) const
+int BSDF::BxDFsMatchingFlags(BxDFType flags)
+{
+    int num = 0;
+
+    // mutex.lock();
+    // int tempNum = numBxDFs;
+    // mutex.unlock();
+
+    //for (int i = 0; i < numBxDFs; ++i)
+    // for (int i = 0; i < tempNum; ++i)
+    for(int i = 0; i < 8; ++i)
+    {
+        if(bxdfs[i])
+        {
+            if (bxdfs[i]->MatchesFlags(flags))
+            {
+                ++num;
+            }
+        }
+    }
+
+    return num;
+}
+

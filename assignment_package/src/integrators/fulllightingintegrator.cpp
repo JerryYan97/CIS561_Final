@@ -72,6 +72,7 @@ Color3f FullLightingIntegrator::Li(const Ray &ray, const Scene &scene, std::shar
         L += (beta * LTerm);
 
         // Computing the ray bounce and global illumination.
+        // ? this sample_f seems useless ?
         Color3f mLiG(0.f);
         Vector3f wiG;
         float pdfG;

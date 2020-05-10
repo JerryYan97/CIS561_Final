@@ -28,7 +28,7 @@ MyGL::MyGL(QWidget *parent)
       sampler(new Sampler(100, 0)),
       integratorType(NAIVE_LIGHTING),
       recursionLimit(5),
-      numPhotons(500000), photonSearchRadius(0.5f),
+      numPhotons(300000), photonSearchRadius(0.2f),
       completeSFX(":/include/complete.wav")
 {
     setFocusPolicy(Qt::ClickFocus);
@@ -384,6 +384,7 @@ void MyGL::RenderScene()
         int photonsPerThread = numPhotons / 8;
         int remainder = numPhotons % 8;
         std::vector<std::vector<Photon>>* photonSets = new std::vector<std::vector<Photon>>(8);
+        std::vector<std::vector<Photon>>* causticPhotonSets = new std::vector<std::vector<Photon>>(8);
         for(int i = 0; i < 8; ++i)
         {
             int threadPhotonCount = photonsPerThread;
@@ -391,11 +392,12 @@ void MyGL::RenderScene()
                 threadPhotonCount += remainder;
             }
             int seed = i;
-            PhotonMapper* pm = new PhotonMapper(threadPhotonCount, &((*photonSets)[i]), &scene, sampler->Clone(seed), recursionLimit);
+            PhotonMapper* pm = new PhotonMapper(threadPhotonCount, &((*photonSets)[i]), &((*causticPhotonSets)[i]), &scene, sampler->Clone(seed), recursionLimit);
             QThreadPool::globalInstance()->start(pm);
         }
         QThreadPool::globalInstance()->waitForDone();
         std::vector<Photon>* allPhotons = new std::vector<Photon>();
+        std::vector<Photon>* allCausticPhotons = new std::vector<Photon>();
         // Copy photons from photonSets to allPhotons
         for(std::vector<Photon>& ps : *photonSets)
         {
@@ -403,10 +405,22 @@ void MyGL::RenderScene()
         }
         delete photonSets;
 
+        // Copy caustic photons from causticPhotonSets to allCausticPhotons
+        for(std::vector<Photon>& ps : *causticPhotonSets)
+        {
+            allCausticPhotons->insert(allCausticPhotons->end(), ps.begin(), ps.end());
+        }
+        delete causticPhotonSets;
+
         // Construct a k-d tree with the photon set,
         // copying the photons into the tree so we can delete the array of photons created here.
         std::cout << "Constructing k-d tree" << std::endl;
         kdTree.build(allPhotons);
+
+        // Construct a caustic k-d tree:
+        std::cout << "Constructing caustic k-d tree" << std::endl;
+        causticKDTree.build(allCausticPhotons);
+
         // delete allPhotons;
         // Now that we have our photon map, we can render our scene
     }
@@ -446,7 +460,7 @@ void MyGL::RenderScene()
                 rt = new SPPMIntegrator(tileBounds, &scene, sampler->Clone(seed), 1, -1, 5, 1.f, 1 << 31);
                 break;
             case PHOTON_MAPPING:
-                rt = new PhotonMapper(tileBounds, &scene, sampler->Clone(seed), recursionLimit, &kdTree, photonSearchRadius);
+                rt = new PhotonMapper(tileBounds, &scene, sampler->Clone(seed), recursionLimit, &kdTree, &causticKDTree, photonSearchRadius);
                 break;
             }
 #define MULTITHREAD // Comment this line out to be able to debug with breakpoints.
