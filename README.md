@@ -1,46 +1,17 @@
-Jiarui Yan(jiaruiya) HW8 Test Result:
+Jiarui Yan(jiaruiya) Final Assignment Test Result:
 ======================
 
-Building k-d tree:
--------------
-![](./KDTree/KD_Result/KdTreeVisiulization.PNG)
-
-k-d Tree Intersection Functions and other tests:
+Photon Mapper:
 -------------
 
-### random:
-
-![](./KDTree/KD_Result/PointsSearch.PNG)
-
-### grid:
-
-![](./KDTree/KD_Result/PointsSearchGrid.PNG)
-
-Thin-Lens Camera:
+Caustic Map 1:
 -------------
+![](./RenderedResult/CausticPhoton3_1024x1024_500K_05_05W.PNG)
 
-![](./PathTracer/CIS461_HW7-master/RenderedResult/ThinLens.png)
-
-Constructive Solid Geometry:
+Caustic Map 2:
 -------------
+![](./RenderedResult/CausticPhoton1_UniformCap_Filter_300K_02_05W.PNG)
 
-### Union:
-
-![](./PathTracer/CIS461_HW7-master/RenderedResult/CSGUnion.png)
-
-### Combine:
-
-![](./PathTracer/CIS461_HW7-master/RenderedResult/CSGCombine.png)
-
-### Differ:
-
-![](./PathTracer/CIS461_HW7-master/RenderedResult/CSGDiffer.png)
-
-### Multiple:
-
-![](./PathTracer/CIS461_HW7-master/RenderedResult/CSGMultiple.png)
-
-Extra Credit (Distant Light):
+Cornell Box by Photon Mapper:
 -------------
-
-![](./PathTracer/CIS461_HW7-master/RenderedResult/DistantLight.png)
+![](./RenderedResult/SumPhoton14_UniformCap_Filter_500K_05_05W.PNG)
